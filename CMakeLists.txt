@@ -38,7 +38,7 @@ set(VITA_MKSFOEX_FLAGS "${VITA_MKSFOEX_FLAGS} -d PARENTAL_LEVEL=1")
 
 # Add any additional include paths here
 include_directories(
-  
+  include
 )
 
 # Add any additional library paths here
@@ -51,6 +51,9 @@ link_directories(
 # Add all the files needed to compile here
 add_executable(2d_shooter
   src/main.c
+  src/single.c
+  src/multi.c
+  src/settings.c
 )
 
 # Library to link to (drop the -l prefix). This will mostly be stubs.
