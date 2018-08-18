@@ -3,6 +3,6 @@
 
 #include "main.h"
 
-int start_single(vita2d_pgf *pgf);
+int start_single(vita2d_pgf *pgf, SceCtrlData *pad);
 
 #endif
