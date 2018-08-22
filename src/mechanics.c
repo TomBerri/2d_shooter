@@ -13,6 +13,7 @@ void vita2d_end() {
 	sceDisplayWaitVblankStart();
 }
 
+//Updates movement of player from left analog stick
 void leftAnalogUpdate(SceCtrlData *ctrl, int *X, int *Y) {
 	//Control square with left analog stick
 	double tx, ty, angle;
@@ -29,6 +30,7 @@ void leftAnalogUpdate(SceCtrlData *ctrl, int *X, int *Y) {
 	}
 }
 
+//Checks whether the coords are of the screen
 void boundaryCheck(int *X, int *Y, int W, int H) {
 	//Boundary checking
 	if (*X <= boundaryXLeft) {
@@ -45,6 +47,7 @@ void boundaryCheck(int *X, int *Y, int W, int H) {
 	}
 }
 
+//Adds a bullet to the inputted projectiles array if there is space available
 static void addBullet(Projectile *projectiles, int init_X, int init_Y, int v_X, int v_Y) {
 	for(int i = 0; i < MAX_PROJECTILES; i++){
 		if (projectiles[i].active == 0) {
@@ -60,6 +63,7 @@ static void addBullet(Projectile *projectiles, int init_X, int init_Y, int v_X, 
 	}
 }
 
+//Moves each bullet in the inputted projectile array
 static void moveBullets(Projectile *projectiles) {
 	for(int i = 0; i < MAX_PROJECTILES; i++){
 		if (projectiles[i].active != 0) {
@@ -74,6 +78,7 @@ static void moveBullets(Projectile *projectiles) {
 	}
 }
 
+//Updates the inputted projectiles array (moves and adds bullets)
 void updateProjectiles(SceCtrlData *ctrl, Projectile *projectiles, int char_X, int char_Y) {
 	double tx, ty, angle;
 	int mov_X = 0; 
