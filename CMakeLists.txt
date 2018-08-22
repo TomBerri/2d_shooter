@@ -54,6 +54,7 @@ add_executable(2d_shooter
   src/single.c
   src/multi.c
   src/settings.c
+  src/mechanics.c
 )
 
 # Library to link to (drop the -l prefix). This will mostly be stubs.

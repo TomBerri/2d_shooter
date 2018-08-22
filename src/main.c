@@ -12,52 +12,6 @@ int mode_recH = 28;
 //Input frame count
 int frame_count = 0;
 
-//Start drawing function
-void vita2d_start() {
-	vita2d_start_drawing();
-	vita2d_clear_screen();
-}
-
-//End drawing function
-void vita2d_end() {
-	vita2d_end_drawing();
-	vita2d_swap_buffers();
-	sceDisplayWaitVblankStart();
-}
-
-void analogUpdate(SceCtrlData *ctrl, int *X, int *Y) {
-	//Control square with left analog stick
-	double pi = 3.14159;
-	double tx, ty, angle;
-	tx = 127.5 - ctrl->lx; //Center of joystick to actual joystick pos
-	ty = 127.5 - ctrl->ly; //same as above but for y
-	angle = atan2(-ty, -tx) * 180 / pi; //Angle for movement
-
-	//Thresholding analog stick
-	if (tx < -20 || tx > 20) {
-		X += (int) (SPEED*(cos(angle*pi / 180))); //Move X 
-	}
-	if (ty < -20 || ty > 20) {
-		Y += (int) (SPEED*(sin(angle*pi / 180))); //Move Y
-	}
-}
-
-void boundaryCheck(int *X, int *Y, int W, int H) {
-	//Boundary checking
-	if (X <= boundaryXLeft) {
-		X = 0;
-	}
-	if (X >= boundaryXRight - W) {
-		X = SCREEN_W - W;
-	}
-	if (Y <= boundaryYUp) {
-		Y = 0;
-	}
-	if (Y >= boundaryYDown - H) {
-		Y = SCREEN_H - H;
-	}
-}
-
 int main(int argc, char *argv[]) {
 	vita2d_pgf *pgf;
 

@@ -8,21 +8,37 @@ int start_single(vita2d_pgf *pgf, SceCtrlData *pad) {
 	int p1W = 50;
 	int p1H = 50;
 
+	//Projectiles
+	Projectile projectiles[MAX_PROJECTILES];
+	for(int i = 0; i < MAX_PROJECTILES; i++) {
+		projectiles[i].active = 0; 
+	}
+
 	while (1) {
 		vita2d_start();
 
 		//Control update
 		sceCtrlPeekBufferPositive(0, pad, 1);
-		analogUpdate(pad, &p1X, &p1Y);
+		leftAnalogUpdate(pad, &p1X, &p1Y);
 		boundaryCheck(&p1X, &p1Y, p1W, p1H);
+
+		//Shoot?
+		updateProjectiles(pad, projectiles, p1X, p1Y);
 
 		//Exit to main menu
 		if (pad->buttons & SCE_CTRL_START) {
 			break;
 		}
 
-		//Draw the character
+		//Draw the character hitbox
 		vita2d_draw_rectangle(p1X, p1Y, p1W, p1H, BLUE);
+
+		//Draw projectiles
+		for (int i = 0; i < MAX_PROJECTILES; i++) {
+			if(projectiles[i].active != 0) {
+				vita2d_draw_rectangle(projectiles[i].X, projectiles[i].Y, projectiles[i].W, projectiles[i].H, WHITE);
+			}
+		}
 	
 		vita2d_end();
 	}
