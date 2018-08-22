@@ -71,7 +71,8 @@ static void moveBullets(Projectile *projectiles) {
 			projectiles[i].Y += projectiles[i].mov_Y;
 
 			//Check bullet is out of bounds
-			if (projectiles[i].X <= boundaryXLeft || projectiles[i].X >= boundaryXRight - BULL_W || projectiles[i].Y <= boundaryYUp || projectiles[i].Y >= boundaryYDown - BULL_H) {
+			if (projectiles[i].X <= boundaryXLeft || projectiles[i].X >= boundaryXRight - BULL_W 
+				|| projectiles[i].Y <= boundaryYUp || projectiles[i].Y >= boundaryYDown - BULL_H) {
 				projectiles[i].active = 0;
 			}
 		}
@@ -79,7 +80,7 @@ static void moveBullets(Projectile *projectiles) {
 }
 
 //Updates the inputted projectiles array (moves and adds bullets)
-void updateProjectiles(SceCtrlData *ctrl, Projectile *projectiles, int char_X, int char_Y) {
+void updateP1Bullets(SceCtrlData *ctrl, Projectile *projectiles, int char_X, int char_Y) {
 	double tx, ty, angle;
 	int mov_X = 0; 
 	int mov_Y = 0;

@@ -8,11 +8,24 @@ int start_single(vita2d_pgf *pgf, SceCtrlData *pad) {
 	int p1W = 50;
 	int p1H = 50;
 
-	//Projectiles
-	Projectile projectiles[MAX_PROJECTILES];
+	//Player 1 Projectiles
+	Projectile p1_bullets[MAX_PROJECTILES];
 	for(int i = 0; i < MAX_PROJECTILES; i++) {
-		projectiles[i].active = 0; 
+		p1_bullets[i].active = 0; 
 	}
+
+	//Enemies
+	Enemy enemies[MAX_ENEMIES];
+	for (int i = 0; i < MAX_ENEMIES; i++) {
+		enemies[i].HP = 1;
+	}
+
+	//Enemy Projectiles
+/*	Projectile enemy_bullets[MAX_PROJECTILES];
+	for (int i = 0; i < MAX_PROJECTILES; i++) {
+		enemy_bullets[i].active = 0;
+	}*/
+
 
 	while (1) {
 		vita2d_start();
@@ -22,8 +35,8 @@ int start_single(vita2d_pgf *pgf, SceCtrlData *pad) {
 		leftAnalogUpdate(pad, &p1X, &p1Y);
 		boundaryCheck(&p1X, &p1Y, p1W, p1H);
 
-		//Shoot?
-		updateProjectiles(pad, projectiles, p1X, p1Y);
+		//P1 Shoot?
+		updateP1Bullets(pad, p1_bullets, p1X, p1Y);
 
 		//Exit to main menu
 		if (pad->buttons & SCE_CTRL_START) {
@@ -35,8 +48,8 @@ int start_single(vita2d_pgf *pgf, SceCtrlData *pad) {
 
 		//Draw projectiles
 		for (int i = 0; i < MAX_PROJECTILES; i++) {
-			if(projectiles[i].active != 0) {
-				vita2d_draw_rectangle(projectiles[i].X, projectiles[i].Y, projectiles[i].W, projectiles[i].H, WHITE);
+			if(p1_bullets[i].active != 0) {
+				vita2d_draw_rectangle(p1_bullets[i].X, p1_bullets[i].Y, p1_bullets[i].W, p1_bullets[i].H, WHITE);
 			}
 		}
 	

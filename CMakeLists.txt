@@ -52,7 +52,7 @@ link_directories(
 add_executable(2d_shooter
   src/main.c
   src/single.c
-  src/multi.c
+  src/enemy.c
   src/settings.c
   src/mechanics.c
 )

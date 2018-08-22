@@ -1,11 +1,11 @@
 #include "main.h"
 #include "single.h"
-#include "multi.h"
+#include "enemy.h"
 #include "settings.h"
 
 //Main Menu selection rectangle
 int mode_recX = 0;
-int mode_recY = SCREEN_H - 110;
+int mode_recY = SCREEN_H - 80;
 int mode_recW = 140;
 int mode_recH = 28;
 
@@ -38,8 +38,7 @@ int main(int argc, char *argv[]) {
 
 		//Main Menu
 		vita2d_pgf_draw_text(pgf, 215, SCREEN_H / 2, BLUE, 3.0f, "2D Shooter Alpha");
-		vita2d_pgf_draw_text(pgf, 10, SCREEN_H - 90, RED, 1.0f, "Single-player");
-		vita2d_pgf_draw_text(pgf, 10, SCREEN_H - 60, RED, 1.0f, "Multi-player");
+		vita2d_pgf_draw_text(pgf, 10, SCREEN_H - 60, RED, 1.0f, "Play Game");
 		vita2d_pgf_draw_text(pgf, 10, SCREEN_H - 30, RED, 1.0f, "Settings");
 
 		//Main Menu controls
@@ -54,10 +53,6 @@ int main(int argc, char *argv[]) {
 					break;
 
 				case 1:
-					start_multi(pgf, &pad);
-					break;
-
-				case 2:
 					start_settings(pgf, &pad);
 					break;
 
@@ -67,7 +62,7 @@ int main(int argc, char *argv[]) {
 		}
 		
 		if (pad.buttons & SCE_CTRL_DOWN) {
-			if (mode < 2 && frame_count == 0) {
+			if (mode < 1 && frame_count == 0) {
 				mode++;
 				mode_recY += 30;
 				frame_count++;
