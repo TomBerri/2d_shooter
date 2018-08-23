@@ -24,7 +24,6 @@
 #define SPEED 5
 #define PROJECTILE_SPEED 10
 #define MAX_PROJECTILES 200
-#define MAX_ENEMIES 1
 #define PI 3.14159
 #define BULL_W 5
 #define BULL_H 5

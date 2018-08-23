@@ -8,6 +8,9 @@ int start_single(vita2d_pgf *pgf, SceCtrlData *pad) {
 	int p1W = 50;
 	int p1H = 50;
 
+	//Total Score
+	int total_score = 0;
+
 	//Player 1 Projectiles
 	Projectile p1_bullets[MAX_PROJECTILES];
 	for(int i = 0; i < MAX_PROJECTILES; i++) {
@@ -17,14 +20,7 @@ int start_single(vita2d_pgf *pgf, SceCtrlData *pad) {
 	//Enemies
 	Enemy enemies[MAX_ENEMIES];
 	for (int i = 0; i < MAX_ENEMIES; i++) {
-		enemies[i].X = SCREEN_W / 2;
-		enemies[i].Y = SCREEN_H / 2;
-		enemies[i].W = 20;
-		enemies[i].H = 20;
-		enemies[i].H = 20;
-		enemies[i].mov_X = 5;
-		enemies[i].mov_Y = 5;
-		enemies[i].HP = 1;
+		enemies[i].HP = 0;
 	}
 
 	//Enemy Projectiles
@@ -46,7 +42,7 @@ int start_single(vita2d_pgf *pgf, SceCtrlData *pad) {
 		updateP1Bullets(pad, p1_bullets, p1X, p1Y);
 
 		//Enemies update
-		updateEnemies(enemies, p1X, p1Y);
+		total_score += updateEnemies(enemies, p1X, p1Y, p1_bullets);
 
 		//Exit to main menu
 		if (pad->buttons & SCE_CTRL_START) {
@@ -63,11 +59,17 @@ int start_single(vita2d_pgf *pgf, SceCtrlData *pad) {
 			}
 		}
 
+		//Draw enemies
 		for (int i = 0; i < MAX_ENEMIES; i++) {
 			if (enemies[i].HP >= 0) {
 				vita2d_draw_rectangle(enemies[i].X, enemies[i].Y, enemies[i].W, enemies[i].H, RED);
 			}
 		}
+
+		//Score
+		char *score_str = (char *) malloc(sizeof(char) * 70);
+		sprintf(score_str, "Score: %d", total_score);
+		vita2d_pgf_draw_text(pgf, 0, 20, WHITE, 1.0f, score_str);
 
 		vita2d_end();
 	}

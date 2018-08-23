@@ -14,8 +14,11 @@ typedef struct Enemies{
 	int mov_Y;
 } Enemy;
 
-#define ENEMY_SPEED 5
+#define ENEMY_SPEED 4
+#define MAX_ENEMIES 10
+#define ENEMY_W 20
+#define ENEMY_H 20
 
-void updateEnemies(Enemy *enemies, int p1X, int p1Y);
+int updateEnemies(Enemy *enemies, int p1X, int p1Y, Projectile *p1_b);
 
 #endif
