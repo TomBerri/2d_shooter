@@ -17,6 +17,13 @@ int start_single(vita2d_pgf *pgf, SceCtrlData *pad) {
 	//Enemies
 	Enemy enemies[MAX_ENEMIES];
 	for (int i = 0; i < MAX_ENEMIES; i++) {
+		enemies[i].X = SCREEN_W / 2;
+		enemies[i].Y = SCREEN_H / 2;
+		enemies[i].W = 20;
+		enemies[i].H = 20;
+		enemies[i].H = 20;
+		enemies[i].mov_X = 5;
+		enemies[i].mov_Y = 5;
 		enemies[i].HP = 1;
 	}
 
@@ -38,6 +45,9 @@ int start_single(vita2d_pgf *pgf, SceCtrlData *pad) {
 		//P1 Shoot?
 		updateP1Bullets(pad, p1_bullets, p1X, p1Y);
 
+		//Enemies update
+		updateEnemies(enemies, p1X, p1Y);
+
 		//Exit to main menu
 		if (pad->buttons & SCE_CTRL_START) {
 			break;
@@ -52,7 +62,13 @@ int start_single(vita2d_pgf *pgf, SceCtrlData *pad) {
 				vita2d_draw_rectangle(p1_bullets[i].X, p1_bullets[i].Y, p1_bullets[i].W, p1_bullets[i].H, WHITE);
 			}
 		}
-	
+
+		for (int i = 0; i < MAX_ENEMIES; i++) {
+			if (enemies[i].HP >= 0) {
+				vita2d_draw_rectangle(enemies[i].X, enemies[i].Y, enemies[i].W, enemies[i].H, RED);
+			}
+		}
+
 		vita2d_end();
 	}
 
