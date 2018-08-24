@@ -21,6 +21,7 @@
 #define boundaryYDown SCREEN_H
 
 //Game variables
+#define P1MAXHP 5
 #define SPEED 5
 #define PROJECTILE_SPEED 10
 #define MAX_PROJECTILES 200

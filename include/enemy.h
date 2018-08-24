@@ -20,5 +20,6 @@ typedef struct Enemies{
 #define ENEMY_H 20
 
 int updateEnemies(Enemy *enemies, int p1X, int p1Y, Projectile *p1_b);
+void addEnemies(Enemy *enemies);
 
 #endif
