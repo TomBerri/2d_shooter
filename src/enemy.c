@@ -2,6 +2,7 @@
 
 //Adds enemies to the game
 void addEnemies(Enemy *enemies) {
+	//For each enemy until one is dead...
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		if (enemies[i].HP <= 0) {
 			enemies[i].HP = 5;
@@ -62,8 +63,8 @@ static int enemyHPCheck(Enemy *e, Projectile *p1_b) {
 	//Check enemy against all P1 projectiles
 	for (int i = 0; i < MAX_PROJECTILES; i++) {
 		if (p1_b[i].active != 0) {
-			int diffX = e->X - p1_b[i].X;
-			int diffY = e->Y - p1_b[i].Y;
+			int diffX = p1_b[i].X - e->X;
+			int diffY = p1_b[i].Y - e->Y;
 
 			if ((diffX <= e->W) && (diffY <= e->H) && (diffX >= -p1_b[i].W) && (diffY >= -p1_b[i].H)) {
 				e->HP--;

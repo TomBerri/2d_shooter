@@ -2,12 +2,14 @@
 
 int start_single(vita2d_pgf *pgf, SceCtrlData *pad) {
 
-	//Character X, Y, W, H
-	int p1X = 420;
-	int p1Y = SCREEN_H / 2;
-	int p1W = 50;
-	int p1H = 50;
-	int p1HP = 5;
+	//Player HP, X, Y, W and H
+	Player p1;
+	p1.X = 420;
+	p1.Y = SCREEN_H / 2;
+	p1.W = 50;
+	p1.H = 50;
+	p1.HP = 5;
+	p1.i_frames = 0;
 
 	//Total Score
 	int total_score = 0;
@@ -35,20 +37,22 @@ int start_single(vita2d_pgf *pgf, SceCtrlData *pad) {
 		enemy_bullets[i].active = 0;
 	}*/
 
+	//Random seed
+	srand(time(NULL));
 
 	while (1) {
 		vita2d_start();
 
 		//Control update
 		sceCtrlPeekBufferPositive(0, pad, 1);
-		leftAnalogUpdate(pad, &p1X, &p1Y);
-		boundaryCheck(&p1X, &p1Y, p1W, p1H);
+		leftAnalogUpdate(pad, &p1.X, &p1.Y);
+		boundaryCheck(&p1);
 
 		//P1 Shoot?
-		updateP1Bullets(pad, p1_bullets, p1X, p1Y);
+		updatePlayerBullets(pad, p1_bullets, p1.X, p1.Y);
 
 		//Enemies update
-		total_score += updateEnemies(enemies, p1X, p1Y, p1_bullets);
+		total_score += updateEnemies(enemies, p1.X, p1.Y, p1_bullets);
 
 		//Add enemies?
 		if (timer <= 0) {
@@ -66,13 +70,22 @@ int start_single(vita2d_pgf *pgf, SceCtrlData *pad) {
 			timer--;
 		}
 
+		//Check P1 HP and invincibility frames
+		if ((checkPlayerHP(&p1, enemies) == -1) && (p1.i_frames <= 0)) {
+			p1.HP--;
+			p1.i_frames = 120;
+		} 
+		else {
+			p1.i_frames--;
+		}
+
 		//Exit to main menu
-		if (pad->buttons & SCE_CTRL_START) {
+		if ((pad->buttons & SCE_CTRL_START) || (p1.HP <= 0)) {
 			break;
 		}
 
 		//Draw the character hitbox
-		vita2d_draw_rectangle(p1X, p1Y, p1W, p1H, BLUE);
+		vita2d_draw_rectangle(p1.X, p1.Y, p1.W, p1.H, BLUE);
 
 		//Draw projectiles
 		for (int i = 0; i < MAX_PROJECTILES; i++) {
@@ -94,15 +107,15 @@ int start_single(vita2d_pgf *pgf, SceCtrlData *pad) {
 		vita2d_pgf_draw_text(pgf, 0, 20, WHITE, 1.0f, score_str);
 
 		//Draw P1 HP
-		vita2d_pgf_draw_text(pgf, 0, SCREEN_H - 50, WHITE, 1.0f, "HP");
+		vita2d_pgf_draw_text(pgf, 0, SCREEN_H - 40, WHITE, 1.0f, "HP");
 		int HP_rect_X = 0;
 		//Draws P1 remaining green HP
-		for (int i = 0; i < p1HP; i++) {
+		for (int i = 0; i < p1.HP; i++) {
 			vita2d_draw_rectangle(HP_rect_X, SCREEN_H - 30, 40, 30, GREEN);
 			HP_rect_X += 50;
 		}
 		//Draws P1 lost red HP
-		for (int i = 0; i < (P1MAXHP - p1HP); i++) {
+		for (int i = 0; i < (P1MAXHP - p1.HP); i++) {
 			vita2d_draw_rectangle(HP_rect_X, SCREEN_H - 30, 40, 30, RED);
 			HP_rect_X += 50;
 		}

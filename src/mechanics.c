@@ -31,20 +31,36 @@ void leftAnalogUpdate(SceCtrlData *ctrl, int *X, int *Y) {
 }
 
 //Checks whether the coords are of the screen
-void boundaryCheck(int *X, int *Y, int W, int H) {
+void boundaryCheck(Player *p) {
 	//Boundary checking
-	if (*X <= boundaryXLeft) {
-		*X = 0;
+	if (p->X <= boundaryXLeft) {
+		p->X = 0;
 	}
-	if (*X >= boundaryXRight - W) {
-		*X = SCREEN_W - W;
+	if (p->X >= boundaryXRight - p->W) {
+		p->X = SCREEN_W - p->W;
 	}
-	if (*Y <= boundaryYUp) {
-		*Y = 0;
+	if (p->Y <= boundaryYUp) {
+		p->Y = 0;
 	}
-	if (*Y >= boundaryYDown - H) {
-		*Y = SCREEN_H - H;
+	if (p->Y >= boundaryYDown - p->H) {
+		p->Y = SCREEN_H - p->H;
 	}
+}
+
+//Checks whether any alive enemies are touching player
+int checkPlayerHP(Player *p, Enemy *enemies) {
+	for (int i = 0; i < MAX_ENEMIES; i++) {
+		if (enemies[i].HP > 0) {
+			int diffX = enemies[i].X - p->X;
+			int diffY = enemies[i].Y - p->Y;
+
+			if ((diffX <= p->W) && (diffY <= p->H) && (diffX >= -enemies[i].W) && (diffY >= -enemies[i].H)) {
+				return -1;
+			}
+		}
+	}
+
+	return 0;
 }
 
 //Adds a bullet to the inputted projectiles array if there is space available
@@ -80,7 +96,7 @@ static void moveBullets(Projectile *projectiles) {
 }
 
 //Updates the inputted projectiles array (moves and adds bullets)
-void updateP1Bullets(SceCtrlData *ctrl, Projectile *projectiles, int char_X, int char_Y) {
+void updatePlayerBullets(SceCtrlData *ctrl, Projectile *projectiles, int char_X, int char_Y) {
 	double tx, ty, angle;
 	int mov_X = 0; 
 	int mov_Y = 0;
