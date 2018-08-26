@@ -32,10 +32,10 @@ int start_single(vita2d_pgf *pgf, SceCtrlData *pad) {
 	}
 
 	//Enemy Projectiles
-/*	Projectile enemy_bullets[MAX_PROJECTILES];
+	Projectile enemy_bullets[MAX_PROJECTILES];
 	for (int i = 0; i < MAX_PROJECTILES; i++) {
 		enemy_bullets[i].active = 0;
-	}*/
+	}
 
 	//Random seed
 	srand(time(NULL));
@@ -49,10 +49,10 @@ int start_single(vita2d_pgf *pgf, SceCtrlData *pad) {
 		boundaryCheck(&p1);
 
 		//P1 Shoot?
-		updatePlayerBullets(pad, p1_bullets, p1.X, p1.Y);
+		updatePlayerBullets(pad, p1_bullets, &p1);
 
 		//Enemies update
-		total_score += updateEnemies(enemies, p1.X, p1.Y, p1_bullets);
+		total_score += updateEnemies(enemies, p1.X, p1.Y, p1_bullets, enemy_bullets);
 
 		//Add enemies?
 		if (timer <= 0) {
@@ -71,7 +71,7 @@ int start_single(vita2d_pgf *pgf, SceCtrlData *pad) {
 		}
 
 		//Check P1 HP and invincibility frames
-		if ((checkPlayerHP(&p1, enemies) == -1) && (p1.i_frames <= 0)) {
+		if ((checkPlayerHP(&p1, enemies, enemy_bullets) == -1) && (p1.i_frames <= 0)) {
 			p1.HP--;
 			p1.i_frames = 120;
 		} 
@@ -87,7 +87,7 @@ int start_single(vita2d_pgf *pgf, SceCtrlData *pad) {
 		//Draw the character hitbox
 		vita2d_draw_rectangle(p1.X, p1.Y, p1.W, p1.H, BLUE);
 
-		//Draw projectiles
+		//Draw player projectiles
 		for (int i = 0; i < MAX_PROJECTILES; i++) {
 			if(p1_bullets[i].active != 0) {
 				vita2d_draw_rectangle(p1_bullets[i].X, p1_bullets[i].Y, p1_bullets[i].W, p1_bullets[i].H, WHITE);
@@ -98,6 +98,13 @@ int start_single(vita2d_pgf *pgf, SceCtrlData *pad) {
 		for (int i = 0; i < MAX_ENEMIES; i++) {
 			if (enemies[i].HP > 0) {
 				vita2d_draw_rectangle(enemies[i].X, enemies[i].Y, enemies[i].W, enemies[i].H, RED);
+			}
+		}
+
+		//Draw enemy projectiles
+		for (int i = 0; i < MAX_PROJECTILES; i++) {
+			if (enemy_bullets[i].active != 0) {
+				vita2d_draw_rectangle(enemy_bullets[i].X, enemy_bullets[i].Y, enemy_bullets[i].W, enemy_bullets[i].H, RED);
 			}
 		}
 

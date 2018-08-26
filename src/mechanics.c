@@ -48,7 +48,7 @@ void boundaryCheck(Player *p) {
 }
 
 //Checks whether any alive enemies are touching player
-int checkPlayerHP(Player *p, Enemy *enemies) {
+int checkPlayerHP(Player *p, Enemy *enemies, Projectile *e_b) {
 	for (int i = 0; i < MAX_ENEMIES; i++) {
 		if (enemies[i].HP > 0) {
 			int diffX = enemies[i].X - p->X;
@@ -60,11 +60,22 @@ int checkPlayerHP(Player *p, Enemy *enemies) {
 		}
 	}
 
+	for (int i = 0; i < MAX_PROJECTILES; i++) {
+		if (e_b[i].active != 0) {
+			int diffX = e_b[i].X - p->X;
+			int diffY = e_b[i].Y - p->Y;
+
+			if ((diffX <= p->W) && (diffY <= p->H) && (diffX >= -e_b[i].W) && (diffY >= -e_b[i].H)) {
+				return -1;
+			}
+		}
+	}
+
 	return 0;
 }
 
 //Adds a bullet to the inputted projectiles array if there is space available
-static void addBullet(Projectile *projectiles, int init_X, int init_Y, int v_X, int v_Y) {
+void addBullet(Projectile *projectiles, int init_X, int init_Y, int v_X, int v_Y) {
 	for(int i = 0; i < MAX_PROJECTILES; i++){
 		if (projectiles[i].active == 0) {
 			projectiles[i].active = 1;
@@ -80,7 +91,7 @@ static void addBullet(Projectile *projectiles, int init_X, int init_Y, int v_X, 
 }
 
 //Moves each bullet in the inputted projectile array
-static void moveBullets(Projectile *projectiles) {
+void moveBullets(Projectile *projectiles) {
 	for(int i = 0; i < MAX_PROJECTILES; i++){
 		if (projectiles[i].active != 0) {
 			projectiles[i].X += projectiles[i].mov_X;
@@ -96,7 +107,7 @@ static void moveBullets(Projectile *projectiles) {
 }
 
 //Updates the inputted projectiles array (moves and adds bullets)
-void updatePlayerBullets(SceCtrlData *ctrl, Projectile *projectiles, int char_X, int char_Y) {
+void updatePlayerBullets(SceCtrlData *ctrl, Projectile *projectiles, Player *p) {
 	double tx, ty, angle;
 	int mov_X = 0; 
 	int mov_Y = 0;
@@ -114,7 +125,8 @@ void updatePlayerBullets(SceCtrlData *ctrl, Projectile *projectiles, int char_X,
 
 	//Check the right analog stick has been moved
 	if (mov_X != 0 || mov_Y != 0) {
-		addBullet(projectiles, char_X, char_Y, mov_X, mov_Y);
+		//Use mid-point of player for bullet origin
+		addBullet(projectiles, (p->X + (p->W / 2)), (p->Y + (p->H / 2)), mov_X, mov_Y);
 	}
 
 	//Update movement of projectiles

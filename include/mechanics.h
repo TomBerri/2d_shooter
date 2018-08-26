@@ -59,6 +59,7 @@ typedef struct Enemies {
 	int H;
 	int mov_X; //Movement vector of projectile
 	int mov_Y;
+	int shoot; //Shoots when 0
 } Enemy;
 
 //Enemy constants
@@ -74,9 +75,11 @@ void vita2d_end();
 //Player updaters
 void leftAnalogUpdate(SceCtrlData *ctrl, int *X, int *Y);
 void boundaryCheck(Player *p);
-int checkPlayerHP(Player *p, Enemy *enemies);
+int checkPlayerHP(Player *p, Enemy *enemies, Projectile *e_b);
 
 //Projectile methods
-void updatePlayerBullets(SceCtrlData *ctrl, Projectile *projectiles, int char_X, int char_Y);
+void updatePlayerBullets(SceCtrlData *ctrl, Projectile *projectiles, Player *p);
+void addBullet(Projectile *projectiles, int init_X, int init_Y, int v_X, int v_Y);
+void moveBullets(Projectile *projectiles);
 
 #endif
