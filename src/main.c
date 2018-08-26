@@ -3,16 +3,17 @@
 #include "enemy.h"
 #include "settings.h"
 
-//Main Menu selection rectangle
-int mode_recX = 0;
-int mode_recY = SCREEN_H - 80;
-int mode_recW = 140;
-int mode_recH = 28;
-
-//Input frame count
-int frame_count = 0;
-
 int main(int argc, char *argv[]) {
+
+	//Main Menu selection rectangle
+	int mode_recX = 0;
+	int mode_recY = SCREEN_H - 80;
+	int mode_recW = 140;
+	int mode_recH = 28;
+
+	//Input frame count
+	int frame_count = 0;
+
 	vita2d_pgf *pgf;
 
 	vita2d_init();
@@ -39,7 +40,7 @@ int main(int argc, char *argv[]) {
 		//Main Menu
 		vita2d_pgf_draw_text(pgf, 215, SCREEN_H / 2, BLUE, 3.0f, "2D Shooter Alpha");
 		vita2d_pgf_draw_text(pgf, 10, SCREEN_H - 60, RED, 1.0f, "Play Game");
-		vita2d_pgf_draw_text(pgf, 10, SCREEN_H - 30, RED, 1.0f, "Settings");
+		vita2d_pgf_draw_text(pgf, 10, SCREEN_H - 30, RED, 1.0f, "Settings and Cheats");
 
 		//Main Menu controls
 		if (pad.buttons & SCE_CTRL_CROSS) {

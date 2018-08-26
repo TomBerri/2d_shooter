@@ -62,6 +62,7 @@ target_link_libraries(2d_shooter
   SceLibKernel_stub # this line is only for demonstration. It's not needed as 
                     # the most common stubs are automatically included.
   vita2d
+  SceIofilemgr_stub
   SceDisplay_stub
   SceGxm_stub
   SceSysmodule_stub
