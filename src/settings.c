@@ -14,9 +14,19 @@ int start_settings(vita2d_pgf *pgf, SceCtrlData *pad) {
 	//Mode enum
 	int mode = 0;
 
-	//Settings and Cheats values
+	//Settings and Cheats values loaded in from config.txt
 	int swapAnalogSticks;
 	int infiniteHealth;
+
+	SceUID config = sceIoOpen("ux0:/data/TOMB00004/config.txt", 0777, SCE_O_RDWR);
+	if (config < 0) {
+		config = sceIoOpen("ux0:/data/TOMB00004/config.txt", 0777, SCE_O_CREAT);
+		int swapAnalogSticks = 0;
+		int infiniteHealth = 0;
+	}
+	else {
+		//Read in from file
+	}
 
 	while (1) {
 		vita2d_start();
@@ -89,6 +99,8 @@ int start_settings(vita2d_pgf *pgf, SceCtrlData *pad) {
 
 		vita2d_end();
 	}
+
+	//Write changes back to file
 
 	return 0;
 }
