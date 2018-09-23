@@ -3,6 +3,8 @@
 #include "enemy.h"
 #include "settings.h"
 
+//Testing the branching stuff
+//Hopefully works
 int main(int argc, char *argv[]) {
 
 	//Main Menu selection rectangle
