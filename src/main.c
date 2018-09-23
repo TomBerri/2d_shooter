@@ -3,6 +3,7 @@
 #include "enemy.h"
 #include "settings.h"
 
+//Hello World
 int main(int argc, char *argv[]) {
 
 	//Main Menu selection rectangle
